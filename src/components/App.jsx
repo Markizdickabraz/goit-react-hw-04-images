@@ -1,4 +1,4 @@
-import React , { Component} from 'react'
+import { useState, useEffect } from 'react'
 import { AppStyled } from './AppStyled'
 import GlobalStyle from 'globalStyled'
 import Searchbar from './Searchbar/Searchbar'
@@ -8,93 +8,77 @@ import LoadMore from './Button/Button'
 import axios from 'axios'
 import Loader from 'components/Loader/Loader'
 
-
-
-
-class App extends Component {
-  state = {
-    name: '',
-    data: null,
-    showModal: false,
-    largeUrl: null,
-    alt: null,
-    loading: false,
-    perPage: 12,
-    page: 1
-  }
+export default function App () {
   
-  async fetch() {
-    this.setState({
-      loading: true
-   })
+  const [name, setName] = useState('');
+  const [data, setData] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [largeUrl, setLargeUrl] = useState(null);
+  const [alt, setAlt] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [perPage, setPerPage] = useState(12);
+  // eslint-disable-next-line
+  const [page, setPage] = useState(1);
+
+  
+  async function fetch() {
+    setLoading(true)
       const BASEURL = 'https://pixabay.com/api/';
       try {
-        const response = await axios.get(`${BASEURL}?key=32463298-aa2adc14f1416dd47ab6801d7&q=${this.state.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.state.perPage}&page=${this.state.page}`);
+        const response = await axios.get(`${BASEURL}?key=32463298-aa2adc14f1416dd47ab6801d7&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${page}`);
         const responseData = await response.data.hits;
-        this.setState({
-          data: responseData
-        })
+
+        setData(responseData)
     
       } catch (error) {
         console.log(error);
       }
-        this.setState({loading:false})
+        setLoading(false)
   }
 
-  toggleModal = () =>
-    this.setState(({ showModal }) => ({
-    showModal: !showModal
-  }))
+//  const toggleModal = () =>
+//     this.setState(({ showModal }) => ({
+//     showModal: !showModal
+//   }))
   
-
-  modalItems = (dataFind) => {
-    this.setState({
-      largeUrl: dataFind.largeImageURL,
-      alt: dataFind.tags,
-  })
+  const toggleModal = () => {
+    setShowModal(!showModal)
   }
 
-  onSubmit = (data) => {
-    this.setState({
-      name: data.name})
+  const modalItems = (dataFind) => {
+  //   this.setState({
+  //     largeUrl: dataFind.largeImageURL,
+  //     alt: dataFind.tags,
+  // })
+    setLargeUrl(dataFind.largeImageUrl)
+    setAlt(dataFind.tags)
   }
 
-  loadMoreClick = (data) => {
-    this.setState(prevState => ({
-      perPage: prevState.perPage + Number(data.perPage)
-    }))
+  const  onSubmit = (data) => {
+    setName(data.name)
+    setPerPage(12)
+  }
+
+  const  loadMoreClick = (data) => {
+    setPerPage(perPage + data.perPage)
   }
   
-  componentDidUpdate(prevProps, prevState) {
-    // console.log(this.state.perPage);
-    // console.log(prevState.perPage)
-        if (this.state.perPage !== prevState.perPage) {
-          this.fetch();
-        }
-    // console.log(this.state.name);
-    // console.log(prevState.name)
+  useEffect(() => {
+    if (!name) {
+      return;
+    }
+    fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [perPage, name])
 
-        if (this.state.name !== prevState.name) {
-           this.setState({
-            perPage: 12,
-      })
-          this.fetch();
-    } 
-
-  }
-
-  render() {
     return (
       <AppStyled>
         <GlobalStyle />
-        <Searchbar onSubmit={this.onSubmit} />
-        <ImageGallary data={this.state.data} toggleModal={() => { this.toggleModal() }} modalItems={this.modalItems} /> 
-        {this.state.showModal && <Modal onClick={()=> {this.toggleModal()}} src={this.state.largeUrl} alt={this.state.alt}></Modal>}
-        {this.state.data !== null && <LoadMore click={this.loadMoreClick} />}
-        {this.state.loading && <Loader /> }
+        <Searchbar onSubmit={onSubmit} />
+        <ImageGallary data={data} toggleModal={() => {toggleModal() }} modalItems={modalItems} /> 
+        {showModal && <Modal onClick={()=> {toggleModal()}} src={largeUrl} alt={alt}></Modal>}
+        {data !== null && <LoadMore click={loadMoreClick} />}
+        {loading && <Loader /> }
       </AppStyled>
     );
   }
-};
-
-export default App;
