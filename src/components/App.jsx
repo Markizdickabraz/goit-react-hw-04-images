@@ -42,15 +42,16 @@ export default function App () {
 //   }))
   
   const toggleModal = () => {
-    setShowModal(!showModal)
+      setShowModal(!showModal)
   }
 
   const modalItems = (dataFind) => {
+    console.log(dataFind)
   //   this.setState({
   //     largeUrl: dataFind.largeImageURL,
   //     alt: dataFind.tags,
   // })
-    setLargeUrl(dataFind.largeImageUrl)
+    setLargeUrl(dataFind.largeImageURL)
     setAlt(dataFind.tags)
   }
 
@@ -75,7 +76,7 @@ export default function App () {
       <AppStyled>
         <GlobalStyle />
         <Searchbar onSubmit={onSubmit} />
-        <ImageGallary data={data} toggleModal={() => {toggleModal() }} modalItems={modalItems} /> 
+        <ImageGallary data={data} toggleModal={() => {toggleModal()}} modalItems={modalItems} /> 
         {showModal && <Modal onClick={()=> {toggleModal()}} src={largeUrl} alt={alt}></Modal>}
         {data !== null && <LoadMore click={loadMoreClick} />}
         {loading && <Loader /> }
