@@ -1,57 +1,48 @@
-import React, { Component } from "react";
+import  { useState} from "react";
 import { SearchForm, SearchbarBtn, SearchInput, SearchbarStyled } from "./searchbarStyled";
 import { ReactComponent as SaerchIcon } from '../../svg/search.svg'
 import PropTypes from 'prop-types';
 
 
-class Searchbar extends Component {
-    state = {
-        name: ''
-    }
+export default function Searchbar (props) {
      
-  handleChacge = e => {
-      const {name, value} = e.currentTarget;
-      this.setState({ [name]: value })
+  const [name, setName] = useState('')
+
+  const handleChacge = e => {
+    setName(e.currentTarget.value)
   }
 
 
-  formSubmit = e => {
+ const formSubmit = e => {
     e.preventDefault();
-    if (this.state.name.trim() === '') {
+    if (name.trim() === '') {
       alert('Там цей, строка пуста!');
       return;
     }
-    this.props.onSubmit(this.state);
-    this.setState({name: ''})
+ 
+   props.onSubmit({name})
+   setName('')
   }
 
 
-    render() {
         return (
     <SearchbarStyled>
-        <SearchForm onSubmit={this.formSubmit}>
+        <SearchForm onSubmit={formSubmit}>
     <SearchbarBtn type="submit">
-              
-                  <SaerchIcon></SaerchIcon>
-                  
+       <SaerchIcon></SaerchIcon>            
     </SearchbarBtn>
-
     <SearchInput
         name="name"
-       
-        value={this.state.name}
-        onChange = {this.handleChacge}
-      type="text"
-                placeholder="Search images and photos"
-                autoComplete="off"
+        value={name}
+        onChange = {handleChacge}
+        type="text"
+        placeholder="Search images and photos"
+        autoComplete="off"
     />
   </SearchForm>
 </SearchbarStyled>
         )
     }
-}
-
-export default Searchbar;
 
 Searchbar.ptopTypes = {
   onSubmit: PropTypes.func.isRequired

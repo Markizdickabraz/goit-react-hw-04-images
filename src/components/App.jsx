@@ -35,22 +35,12 @@ export default function App () {
       }
         setLoading(false)
   }
-
-//  const toggleModal = () =>
-//     this.setState(({ showModal }) => ({
-//     showModal: !showModal
-//   }))
   
   const toggleModal = () => {
       setShowModal(!showModal)
   }
 
   const modalItems = (dataFind) => {
-    console.log(dataFind)
-  //   this.setState({
-  //     largeUrl: dataFind.largeImageURL,
-  //     alt: dataFind.tags,
-  // })
     setLargeUrl(dataFind.largeImageURL)
     setAlt(dataFind.tags)
   }
