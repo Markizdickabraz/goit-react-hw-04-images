@@ -8,10 +8,9 @@ const modalRoot = document.querySelector('#modal-root');
 export default function Modal(props) {
 
     useEffect(() => {
-            const clickToEsc = (e) => {
-       if (e.code === 'Escape') {
-            props.onClick()
-            
+        const clickToEsc = (e) => {
+        if (e.code === 'Escape') {
+            props.onClick();
         }
         return;
     }
@@ -20,14 +19,11 @@ export default function Modal(props) {
         return() => { window.removeEventListener('keydown', clickToEsc)}
             })
 
-
-    
         const {onClick, src, alt} = props
         return createPortal(
             <Overlay onClick={onClick}>
                 <ModalStyled
                      src={src} alt={alt} />
-                
             </Overlay>, modalRoot
         )
     }

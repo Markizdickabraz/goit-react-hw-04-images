@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 export default function ImageGallary (props) {
 
   const [data, setData] = useState(null);
-  // const [name, setName] = useState('');
   
   useEffect(() => {
   setData(props.data)

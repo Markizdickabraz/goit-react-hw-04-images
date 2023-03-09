@@ -1,7 +1,6 @@
 import { GalleryImageStyled, GalleryItemStyled } from "./ImageGalleryItemsStyled";
 import PropTypes  from "prop-types";
 
-
 export default function ImageGalleryItem({ items }) {
     return (
         items.map(item => (
