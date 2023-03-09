@@ -67,7 +67,7 @@ export default function App () {
         <GlobalStyle />
         <Searchbar onSubmit={onSubmit} />
         <ImageGallary data={data} toggleModal={() => {toggleModal()}} modalItems={modalItems} /> 
-        {showModal && <Modal onClick={()=> {toggleModal()}} src={largeUrl} alt={alt}></Modal>}
+        {showModal && <Modal onClick={()=> {toggleModal()}} src={largeUrl} alt={alt} showModal= {showModal}></Modal>}
         {data !== null && <LoadMore click={loadMoreClick} />}
         {loading && <Loader /> }
       </AppStyled>

@@ -1,29 +1,28 @@
-import React, { Component } from "react";
+import { useEffect} from "react";
 import { Overlay, ModalStyled } from "./modalStyled";
 import { createPortal } from "react-dom";
 import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export default class Modal extends Component {
-    componentDidMount() {
-        window.addEventListener('keydown', this.clickToEsc)
-    }
+export default function Modal(props) {
 
-    componentWillUnmount(){
-        window.removeEventListener ('keydown', this.clickToEsc)
+    useEffect(() => {
+            const clickToEsc = (e) => {
+       if (e.code === 'Escape') {
+            props.onClick()
+            
+        }
+        return;
     }
+        window.addEventListener('keydown', clickToEsc)
+        
+        return() => { window.removeEventListener('keydown', clickToEsc)}
+            })
 
-    clickToEsc = (e) =>{
-        if (e.code === 'Escape') {
-                console.dir(this.props.onClick);    
-                this.props.onClick()
-            }
-    }
+
     
-
-    render() {
-        const {onClick, src, alt} = this.props
+        const {onClick, src, alt} = props
         return createPortal(
             <Overlay onClick={onClick}>
                 <ModalStyled
@@ -32,7 +31,6 @@ export default class Modal extends Component {
             </Overlay>, modalRoot
         )
     }
-}
 
 Modal.propTypes = {
     onClick: PropTypes.func.isRequired,
