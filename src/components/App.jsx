@@ -50,8 +50,8 @@ export default function App () {
     setPerPage(12)
   }
 
-  const  loadMoreClick = (data) => {
-    setPerPage(perPage + data.perPage)
+  const loadMoreClick = (data) => {
+    setPerPage(perPage + data)
   }
   
   useEffect(() => {

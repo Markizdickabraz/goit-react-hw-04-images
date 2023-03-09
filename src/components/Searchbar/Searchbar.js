@@ -3,7 +3,6 @@ import { SearchForm, SearchbarBtn, SearchInput, SearchbarStyled } from "./search
 import { ReactComponent as SaerchIcon } from '../../svg/search.svg'
 import PropTypes from 'prop-types';
 
-
 export default function Searchbar (props) {
      
   const [name, setName] = useState('')
@@ -12,18 +11,15 @@ export default function Searchbar (props) {
     setName(e.currentTarget.value)
   }
 
-
  const formSubmit = e => {
     e.preventDefault();
     if (name.trim() === '') {
       alert('Там цей, строка пуста!');
       return;
     }
- 
    props.onSubmit({name})
    setName('')
   }
-
 
         return (
     <SearchbarStyled>
